@@ -13,6 +13,22 @@ float vec2Mag (vec2 u){
     return result;
 }
 
+vec2 vec2Norm (vec2 u){
+    float mag = vec2Mag (u);
+    vec2 result = {u.x / mag, u.y / mag};
+    return result;
+}
+
+vec2 vec2Add (vec2 u, vec2 v){
+    vec2 result = {u.x + v.x, u.y + v.y};
+    return result;
+}
+
+vec2 vec2Scale (float s, vec2 u){
+    vec2 result = {s * u.x, s * u.y};
+    return result;
+}
+
 /* 3D vector */
 float vec3Dot (vec3 u, vec3 v){
     float result;
@@ -23,6 +39,31 @@ float vec3Dot (vec3 u, vec3 v){
 float vec3Mag (vec3 u){
     float result;
     result = sqrt (pow (u.x, 2) + pow (u.y, 2) + pow (u.z, 2));
+    return result;
+}
+
+vec3 vec3Norm (vec3 u){
+    float mag = vec3Mag (u);
+    vec3 result = {u.x / mag, u.y / mag, u.z / mag};
+    return result;
+}
+
+vec3 vec3Add (vec3 u, vec3 v){
+    vec3 result = {u.x + v.x, u.y + v.y, u.z + v.z};
+    return result;
+}
+
+vec3 vec3Scale (float s, vec3 u){
+    vec3 result = {s * u.x, s * u.y, s* u.z};
+    return result;
+}
+
+vec3 vec3Cross (vec3 u, vec3 v){
+    vec3 result = {
+        u.y * v.z - u.z * v.y,
+        u.z * v.x - u.x * v.z,
+        u.x * v.y - u.y * v.x
+    };
     return result;
 }
 
@@ -39,8 +80,25 @@ float vec4Mag (vec4 u){
     return result;
 }
 
+vec4 vec4Norm (vec4 u){
+    float mag = vec4Mag (u);
+    vec4 result = {u.x / mag, u.y / mag, u.z / mag, u.w / mag};
+    return result;
+}
+
+vec4 vec4Add (vec4 u, vec4 v){
+    vec4 result = {u.x + v.x, u.y + v.y, u.z + v.z, u.w + v.w};
+    return result;
+}
+
+vec4 vec4Scale (float s, vec4 u){
+    vec4 result = {s * u.x, s * u.y, s * u.z, s * u.w};
+    return result;
+}
+
 /* 2x2 matrix */
 void mat2ToArray (mat2 x, float data[4]){
+    /* Needs to be flipped about leading diagonal */
     data[0] = x.a;
     data[1] = x.b;
 
@@ -70,6 +128,7 @@ float mat2Det (mat2 x){
 
 /* 3x3 matrix */
 void mat3ToArray (mat3 x, float data[9]){
+    /* Needs to be flipped about leading diagonal */
     data[0] = x.a;
     data[1] = x.b;
     data[2] = x.c;
@@ -118,23 +177,23 @@ float mat3Det (mat3 x){
 /* 4x4 matrix */
 void mat4ToArray (mat4 x, float data[16]){
     data[0]  = x.a;
-    data[1]  = x.b;
-    data[2]  = x.c;
-    data[3]  = x.d;
+    data[4]  = x.b;
+    data[8]  = x.c;
+    data[12]  = x.d;
 
-    data[4]  = x.e;
+    data[1]  = x.e;
     data[5]  = x.f;
-    data[6]  = x.g;
-    data[7]  = x.h;
+    data[9]  = x.g;
+    data[13]  = x.h;
 
-    data[8]  = x.i;
-    data[9]  = x.j;
+    data[2]  = x.i;
+    data[6]  = x.j;
     data[10] = x.k;
-    data[11] = x.l;
+    data[14] = x.l;
 
-    data[12] = x.m;
-    data[13] = x.n;
-    data[14] = x.o;
+    data[3] = x.m;
+    data[7] = x.n;
+    data[11] = x.o;
     data[15] = x.p;
 }
 

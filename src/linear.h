@@ -6,14 +6,24 @@
 typedef struct {float x; float y;} vec2;
 float vec2Dot (vec2 u, vec2 v);
 float vec2Mag (vec2 u);
+vec2 vec2Norm (vec2 u);
+vec2 vec2Add (vec2 u, vec2 v);
+vec2 vec2Scale (float s, vec2 u);
 
 typedef struct {float x; float y; float z;} vec3;
 float vec3Dot (vec3 u, vec3 v);
 float vec3Mag (vec3 u);
+vec3 vec3Norm (vec3 u);
+vec3 vec3Add (vec3 u, vec3 v);
+vec3 vec3Scale (float s, vec3 u);
+vec3 vec3Cross (vec3 u, vec3 v);
 
 typedef struct {float x; float y; float z; float w;} vec4;
 float vec4Dot (vec4 u ,vec4 v);
 float vec4Mag (vec4 u);
+vec4 vec4Norm (vec4 u);
+vec4 vec4Add (vec4 u, vec4 v);
+vec4 vec4Scale (float s, vec4 u);
 
 typedef struct {
     float a; float b;

@@ -5,6 +5,7 @@
 #include <SOIL/SOIL.h>
 #include <stdio.h>
 #include <math.h>
+#include <stdbool.h>
 
 #include "flow.h"
 #include "shader.h"
@@ -13,15 +14,45 @@
 #include "linear.h"
 #include "transform.h"
 
-const int WIDTH = 800;
-const int HEIGHT = 600;
+const int WIDTH = 1920;
+const int HEIGHT = 1080;
+bool keys[1024];
 
 const double pi = 4 * atan (1);
+
+/* Camera */
+vec3 up = {0.0f, 1.0f, 0.0f};
+vec3 cameraPosition = {0.0f, 0.0f, 3.0f};
+vec3 cameraForward = {0.0f, 0.0f, -1.0f};
 
 void keyCallback (GLFWwindow* window, int key, int scancode, 
         int action, int mode){
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose (window, GL_TRUE);
+
+    if (action == GLFW_PRESS)
+        keys[key] = true;
+    else if (action == GLFW_RELEASE)
+        keys[key] = false;
+}
+
+int gameUpdate (){
+    float cameraSpeed = 3.0f * timeDelta;
+    if (keys[GLFW_KEY_W])
+        cameraPosition = vec3Add (cameraPosition, 
+                vec3Scale (cameraSpeed, cameraForward));
+    if (keys[GLFW_KEY_S])
+        cameraPosition = vec3Add (cameraPosition, 
+                vec3Scale (-cameraSpeed, cameraForward));
+    if (keys[GLFW_KEY_D])
+        cameraPosition = vec3Add (cameraPosition, 
+                vec3Scale (cameraSpeed, vec3Norm 
+                    (vec3Cross (cameraForward, up))));
+    if (keys[GLFW_KEY_A])
+        cameraPosition = vec3Add (cameraPosition, 
+                vec3Scale (-cameraSpeed, vec3Norm 
+                    (vec3Cross (cameraForward, up))));
+    return 0;
 }
 
 int main (){
@@ -31,16 +62,63 @@ int main (){
 
     /* Vertex data */
     GLfloat vertices[] = {
-         /* Positions */      /* Colours */       /* Texture coordinates */
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f
+         /* Positions */      /* Texture coordinates */
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
 
     GLuint elements[] = {
-        0, 1, 3,
-        1, 2, 3
+    };
+
+    vec3 cubePositions[] = {
+        (vec3){0.0f, 0.0f, 0.0f},
+        (vec3){2.0f, 2.0f, 0.0f},
+        (vec3){-1.5f, -2.2f, -2.5f},
+        (vec3){-3.8f, -2.0f, -12.3f},
+        (vec3){2.4f, -0.4f, -3.5f},
+        (vec3){-1.7f, 3.0f, -7.5f},
+        (vec3){1.3f, -2.0f, -2.5f},
+        (vec3){1.5f, 2.0f, -2.5f},
+        (vec3){-1.3f, 1.0f, -1.5f}
     };
 
     /* Create shaders */
@@ -67,26 +145,37 @@ int main (){
 
     /* Store information on specific vertex array for redrawing */
     glBindVertexArray (VAO);
-    /* Buffer vertices */
-    glBindBuffer (GL_ARRAY_BUFFER, VBO);
-    glBufferData (GL_ARRAY_BUFFER, sizeof (vertices), vertices, 
-            GL_STATIC_DRAW);
-    /* Buffer elements */
-    glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData (GL_ELEMENT_ARRAY_BUFFER, sizeof (elements), elements,
-            GL_STATIC_DRAW);
-    /* Position */
-    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof (GLfloat), 
-            (GLvoid*)0);
-    glEnableVertexAttribArray (0);
-    /* Colour */
-    glVertexAttribPointer (1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof (GLfloat),
-            (GLvoid*)(3 * sizeof (GLfloat)));
-    glEnableVertexAttribArray (1);
-    /* Texture coordinates */
-    glVertexAttribPointer (2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof (GLfloat),
-            (GLvoid*)(6 * sizeof (GLfloat)));
-    glEnableVertexAttribArray (2);
+        /* Buffer vertices */
+        glBindBuffer (GL_ARRAY_BUFFER, VBO);
+        glBufferData (GL_ARRAY_BUFFER, 
+                      sizeof (vertices), 
+                      vertices, 
+                      GL_STATIC_DRAW);
+
+        /* Buffer elements */
+        glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, EBO);
+        glBufferData (GL_ELEMENT_ARRAY_BUFFER, 
+                      sizeof (elements), 
+                      elements,
+                      GL_STATIC_DRAW);
+
+        /* Position */
+        glVertexAttribPointer (0, 
+                               3, 
+                               GL_FLOAT, 
+                               GL_FALSE, 
+                               5 * sizeof (GLfloat), 
+                               (GLvoid*)0);
+        glEnableVertexAttribArray (0);
+
+        /* Texture coordinates */
+        glVertexAttribPointer (1, 
+                               2, 
+                               GL_FLOAT, 
+                               GL_FALSE, 
+                               5 * sizeof (GLfloat),
+                               (GLvoid*)(3 * sizeof (GLfloat)));
+        glEnableVertexAttribArray (1);
     /* Unbind vertex array */
     glBindVertexArray (0);
 
@@ -95,14 +184,16 @@ int main (){
     texture = textureCreate ("uniTexture", "images/container.jpg", 0, 
             shaderProgram);
 
+    
     /* Matrices */
-    vec3 axis = {1.0f, 0.0f, 0.0f};
-    mat4 model = mat4Rotate (axis, -(pi / 4));
-
-    vec3 translation = {0.0f, 0.0f, 5.0f};
-    mat4 view = mat4Translate (translation);
-
-    mat4 projection = mat4Perspective (pi / 2, (3 * pi) / 8, 0.1f, 100.0f);
+    mat4 model = (mat4){
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    };
+    mat4 projection = mat4Perspective (pi / 2, (float)WIDTH / (float)HEIGHT, 
+                                       0.01f, 100.0f);
     
     GLint modelLoc = glGetUniformLocation (shaderProgram, "model");
     GLint viewLoc = glGetUniformLocation (shaderProgram, "view");
@@ -110,41 +201,56 @@ int main (){
 
     GLfloat modelArray[16];
     mat4ToArray (model, modelArray);
-    GLfloat viewArray[16];
-    mat4ToArray (view, viewArray);
+    GLfloat viewArray[16]; 
     GLfloat projArray[16];
     mat4ToArray (projection, projArray);
 
-    printf ("%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n%f %f %f %f\n",
-            projArray[0], projArray[1], projArray[2], projArray[3],
-            projArray[4], projArray[5], projArray[6], projArray[7],
-            projArray[8], projArray[9], projArray[10], projArray[11],
-            projArray[12], projArray[13], projArray[14], projArray[15]);
-
     /* Render code executed in main loop */
-    int renderFrame (){
+    int renderUpdate (){
         glClearColor (0.2f, 0.3f, 0.3f, 1.0f);
-        glClear (GL_COLOR_BUFFER_BIT);
+        glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glActiveTexture (GL_TEXTURE0);
         glBindTexture (GL_TEXTURE_2D, texture);
         glUseProgram (shaderProgram);
 
-        glUniformMatrix4fv (modelLoc, 1, GL_FALSE, modelArray);
+        mat4 view = mat4LookAt (cameraPosition, 
+                vec3Add (cameraPosition, cameraForward), up);
+        mat4ToArray (view, viewArray);
+
         glUniformMatrix4fv (viewLoc, 1, GL_FALSE, viewArray);
         glUniformMatrix4fv (projLoc, 1, GL_FALSE, projArray);
 
         glBindVertexArray (VAO);
-        glDrawElements (GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        for (int i = 0; i < 9; i++){
+            mat4 model = (mat4){
+                1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1
+            };
+            vec3 axis = {1.0f, 0.3f, 0.5f};
+            float angle = 10 * i;
+
+            model = mat4Mult (mat4Rotate (axis, angle), model);
+            model = mat4Mult (mat4Translate (cubePositions[i]), model);
+
+            mat4ToArray (model, modelArray);
+            glUniformMatrix4fv (modelLoc, 1, GL_FALSE, modelArray);
+
+            glDrawArrays (GL_TRIANGLES, 0, 36);
+        }
         glBindVertexArray (0);
 
         return 0; 
     }
 
     /* Main loop */
-    flowMain (window, &renderFrame);
+    flowMain (window, &renderUpdate, &gameUpdate);
 
     /* Cleanly exit */
     flowExit ();
     return 0;
 }
+
+

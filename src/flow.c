@@ -30,14 +30,22 @@ GLFWwindow* flowInit (int width, int height, char* name){
     glfwGetFramebufferSize (window, &viewWidth, &viewHeight);
     glViewport (0, 0, viewWidth, viewHeight);
 
+    /* Settings */
+    glEnable (GL_DEPTH_TEST);
+
     return window;
 }
 
-int flowMain (GLFWwindow* window, int (*renderFrame) ()){
+int flowMain (GLFWwindow* window, int (*renderUpdate) (), int (*gameUpdate) ()){
     /* Main loop */
     while (!glfwWindowShouldClose (window)){
+        timeCurrFrame = glfwGetTime ();
+        timeDelta = timeCurrFrame - timeLastFrame;
+        timeLastFrame = timeCurrFrame;
+
         glfwPollEvents ();
-        (*renderFrame) ();
+        (*gameUpdate) ();
+        (*renderUpdate) ();
         glfwSwapBuffers (window);
     }
     return 0;

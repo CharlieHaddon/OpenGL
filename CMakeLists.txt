@@ -10,7 +10,7 @@ set(INCLUDE_DIR ${CMAKE_SOURCE_DIR}/inc)
 set(SOURCE_DIR  ${CMAKE_SOURCE_DIR}/src)
 
 # Compiler flags
-set(GCC_COMPILE_FLAGS "-Wall")
+set(GCC_COMPILE_FLAGS "-g -Wall")
 set(GCC_LINK_FLAGS    "-lGL -lGLEW -lm -lSOIL")
 
 set(CMAKE_C_FLAGS "${GCC_COMPILE_FLAGS}")
