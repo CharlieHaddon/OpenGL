@@ -36,6 +36,33 @@ void keyCallback (GLFWwindow* window, int key, int scancode,
         keys[key] = false;
 }
 
+float lastx, lasty;
+float pitch, yaw;
+bool firstMouse = true;
+void mouseCallback (GLFWwindow* window, double xPos, double yPos){
+    if (firstMouse){
+        lastx = xPos;
+        lasty = yPos;
+        firstMouse = false;
+    }
+    float xOffset = xPos - lastx;
+    float yOffset = lasty - yPos;
+    lastx = xPos;
+    lasty = yPos;
+
+    float sensitivity = 0.20f * timeDelta;
+    xOffset *= sensitivity;
+    yOffset *= sensitivity;
+
+    yaw += xOffset;
+    pitch += yOffset;
+
+    if (pitch > (pi / 2) - 0.01f)
+        pitch = (pi / 2) - 0.01f;
+    if (pitch < -(pi / 2) + 0.01f)
+        pitch = -(pi / 2) + 0.01f;
+}
+
 int gameUpdate (){
     float cameraSpeed = 3.0f * timeDelta;
     if (keys[GLFW_KEY_W])
@@ -52,6 +79,14 @@ int gameUpdate (){
         cameraPosition = vec3Add (cameraPosition, 
                 vec3Scale (-cameraSpeed, vec3Norm 
                     (vec3Cross (cameraForward, up))));
+
+    vec3 forward;
+    forward.x = cos (pitch) * sin (yaw);
+    forward.y = sin (pitch);
+    forward.z = -cos (pitch) * cos (yaw);
+
+    cameraForward = vec3Norm (forward);
+
     return 0;
 }
 
@@ -59,6 +94,7 @@ int main (){
     /* Initialisation */
     GLFWwindow* window = flowInit (WIDTH, HEIGHT, "OpenGL");
     glfwSetKeyCallback (window, keyCallback);
+    glfwSetCursorPosCallback (window, mouseCallback);
 
     /* Vertex data */
     GLfloat vertices[] = {
