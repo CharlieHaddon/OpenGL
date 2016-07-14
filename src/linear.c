@@ -97,15 +97,6 @@ vec4 vec4Scale (float s, vec4 u){
 }
 
 /* 2x2 matrix */
-void mat2ToArray (mat2 x, float data[4]){
-    /* Needs to be flipped about leading diagonal */
-    data[0] = x.a;
-    data[1] = x.b;
-
-    data[2] = x.c;
-    data[3] = x.d;
-}
-
 mat2 mat2Mult (mat2 x, mat2 y){
     float a = x.a * y.a + x.b * y.c;
     float b = x.a * y.b + x.b * y.d;
@@ -127,21 +118,6 @@ float mat2Det (mat2 x){
 }
 
 /* 3x3 matrix */
-void mat3ToArray (mat3 x, float data[9]){
-    /* Needs to be flipped about leading diagonal */
-    data[0] = x.a;
-    data[1] = x.b;
-    data[2] = x.c;
-
-    data[3] = x.d;
-    data[4] = x.e;
-    data[5] = x.f;
-
-    data[6] = x.g;
-    data[7] = x.h;
-    data[8] = x.i;
-}
-
 mat3 mat3Mult (mat3 x, mat3 y){
     float a = x.a * y.a + x.b * y.d + x.c * y.g;
     float b = x.a * y.b + x.b * y.e + x.c * y.h;
@@ -175,27 +151,7 @@ float mat3Det (mat3 x){
 }
 
 /* 4x4 matrix */
-void mat4ToArray (mat4 x, float data[16]){
-    data[0]  = x.a;
-    data[4]  = x.b;
-    data[8]  = x.c;
-    data[12]  = x.d;
 
-    data[1]  = x.e;
-    data[5]  = x.f;
-    data[9]  = x.g;
-    data[13]  = x.h;
-
-    data[2]  = x.i;
-    data[6]  = x.j;
-    data[10] = x.k;
-    data[14] = x.l;
-
-    data[3] = x.m;
-    data[7] = x.n;
-    data[11] = x.o;
-    data[15] = x.p;
-}
 
 mat4 mat4Mult (mat4 x, mat4 y){
     float a = x.a * y.a + x.b * y.e + x.c * y.i + x.d * y.m;

@@ -1,5 +1,49 @@
 #include "transform.h"
 
+void mat2GLArray (mat2 x, float data[4]){
+    data[0] = x.a;
+    data[2] = x.b;
+
+    data[1] = x.c;
+    data[3] = x.d;
+}
+
+void mat3GLArray (mat3 x, float data[9]){
+    data[0] = x.a;
+    data[3] = x.b;
+    data[6] = x.c;
+
+    data[1] = x.d;
+    data[4] = x.e;
+    data[7] = x.f;
+
+    data[2] = x.g;
+    data[5] = x.h;
+    data[8] = x.i;
+}
+
+void mat4GLArray (mat4 x, float data[16]){
+    data[0]  = x.a;
+    data[4]  = x.b;
+    data[8]  = x.c;
+    data[12]  = x.d;
+
+    data[1]  = x.e;
+    data[5]  = x.f;
+    data[9]  = x.g;
+    data[13]  = x.h;
+
+    data[2]  = x.i;
+    data[6]  = x.j;
+    data[10] = x.k;
+    data[14] = x.l;
+
+    data[3] = x.m;
+    data[7] = x.n;
+    data[11] = x.o;
+    data[15] = x.p;
+}
+
 mat4 mat4Translate (vec3 v){
     mat4 x = {
         1, 0, 0, v.x,

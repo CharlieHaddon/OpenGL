@@ -14,9 +14,9 @@
 #include "linear.h"
 #include "transform.h"
 
+GLFWwindow* window;
 const int WIDTH = 1920;
 const int HEIGHT = 1080;
-bool keys[1024];
 
 const double pi = 4 * atan (1);
 
@@ -25,34 +25,34 @@ vec3 up = {0.0f, 1.0f, 0.0f};
 vec3 cameraPosition = {0.0f, 0.0f, 3.0f};
 vec3 cameraForward = {0.0f, 0.0f, -1.0f};
 
-void keyCallback (GLFWwindow* window, int key, int scancode, 
-        int action, int mode){
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        glfwSetWindowShouldClose (window, GL_TRUE);
+double pitch = 0;
+double yaw = 0;
 
-    if (action == GLFW_PRESS)
-        keys[key] = true;
-    else if (action == GLFW_RELEASE)
-        keys[key] = false;
-}
+int gameUpdate (){
+    if (keyState[GLFW_KEY_ESCAPE])
+        glfwSetWindowShouldClose (window, true);
 
-float lastx, lasty;
-float pitch, yaw;
-bool firstMouse = true;
-void mouseCallback (GLFWwindow* window, double xPos, double yPos){
-    if (firstMouse){
-        lastx = xPos;
-        lasty = yPos;
-        firstMouse = false;
-    }
-    float xOffset = xPos - lastx;
-    float yOffset = lasty - yPos;
-    lastx = xPos;
-    lasty = yPos;
-
-    float sensitivity = 0.20f * timeDelta;
-    xOffset *= sensitivity;
-    yOffset *= sensitivity;
+    float cameraSpeed = 3.0f * timeDelta;
+    if (keyState[GLFW_KEY_W])
+        cameraPosition = vec3Add (cameraPosition, 
+                vec3Scale (cameraSpeed, cameraForward));
+    if (keyState[GLFW_KEY_S])
+        cameraPosition = vec3Add (cameraPosition, 
+                vec3Scale (-cameraSpeed, cameraForward));
+    if (keyState[GLFW_KEY_D])
+        cameraPosition = vec3Add (cameraPosition, 
+                vec3Scale (cameraSpeed, vec3Norm 
+                    (vec3Cross (cameraForward, up))));
+    if (keyState[GLFW_KEY_A])
+        cameraPosition = vec3Add (cameraPosition, 
+                vec3Scale (-cameraSpeed, vec3Norm 
+                    (vec3Cross (cameraForward, up))));
+    
+    float mouseSpeed = 0.15 * timeDelta;
+    double xOffset = mousexOffset;
+    double yOffset = mouseyOffset;
+    xOffset *= mouseSpeed;
+    yOffset *= mouseSpeed;
 
     yaw += xOffset;
     pitch += yOffset;
@@ -61,24 +61,6 @@ void mouseCallback (GLFWwindow* window, double xPos, double yPos){
         pitch = (pi / 2) - 0.01f;
     if (pitch < -(pi / 2) + 0.01f)
         pitch = -(pi / 2) + 0.01f;
-}
-
-int gameUpdate (){
-    float cameraSpeed = 3.0f * timeDelta;
-    if (keys[GLFW_KEY_W])
-        cameraPosition = vec3Add (cameraPosition, 
-                vec3Scale (cameraSpeed, cameraForward));
-    if (keys[GLFW_KEY_S])
-        cameraPosition = vec3Add (cameraPosition, 
-                vec3Scale (-cameraSpeed, cameraForward));
-    if (keys[GLFW_KEY_D])
-        cameraPosition = vec3Add (cameraPosition, 
-                vec3Scale (cameraSpeed, vec3Norm 
-                    (vec3Cross (cameraForward, up))));
-    if (keys[GLFW_KEY_A])
-        cameraPosition = vec3Add (cameraPosition, 
-                vec3Scale (-cameraSpeed, vec3Norm 
-                    (vec3Cross (cameraForward, up))));
 
     vec3 forward;
     forward.x = cos (pitch) * sin (yaw);
@@ -92,9 +74,7 @@ int gameUpdate (){
 
 int main (){
     /* Initialisation */
-    GLFWwindow* window = flowInit (WIDTH, HEIGHT, "OpenGL");
-    glfwSetKeyCallback (window, keyCallback);
-    glfwSetCursorPosCallback (window, mouseCallback);
+    window = flowInit (WIDTH, HEIGHT, "OpenGL");
 
     /* Vertex data */
     GLfloat vertices[] = {
@@ -236,10 +216,10 @@ int main (){
     GLint projLoc = glGetUniformLocation (shaderProgram, "projection");
 
     GLfloat modelArray[16];
-    mat4ToArray (model, modelArray);
+    mat4GLArray (model, modelArray);
     GLfloat viewArray[16]; 
     GLfloat projArray[16];
-    mat4ToArray (projection, projArray);
+    mat4GLArray (projection, projArray);
 
     /* Render code executed in main loop */
     int renderUpdate (){
@@ -252,7 +232,7 @@ int main (){
 
         mat4 view = mat4LookAt (cameraPosition, 
                 vec3Add (cameraPosition, cameraForward), up);
-        mat4ToArray (view, viewArray);
+        mat4GLArray (view, viewArray);
 
         glUniformMatrix4fv (viewLoc, 1, GL_FALSE, viewArray);
         glUniformMatrix4fv (projLoc, 1, GL_FALSE, projArray);
@@ -271,7 +251,7 @@ int main (){
             model = mat4Mult (mat4Rotate (axis, angle), model);
             model = mat4Mult (mat4Translate (cubePositions[i]), model);
 
-            mat4ToArray (model, modelArray);
+            mat4GLArray (model, modelArray);
             glUniformMatrix4fv (modelLoc, 1, GL_FALSE, modelArray);
 
             glDrawArrays (GL_TRIANGLES, 0, 36);

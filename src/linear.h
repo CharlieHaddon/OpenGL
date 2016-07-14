@@ -30,7 +30,6 @@ typedef struct {
     float c; float d;
 } mat2;
 
-void mat2ToArray (mat2 x, float data[4]);
 mat2 mat2Mult (mat2 x, mat2 y);
 float mat2Det (mat2 x);
 
@@ -40,7 +39,6 @@ typedef struct {
     float g; float h; float i;
 } mat3;
 
-void mat3ToArray (mat3 x, float data[9]);
 mat3 mat3Mult (mat3 x, mat3 y);
 float mat3Det (mat3 x);
 
@@ -51,7 +49,6 @@ typedef struct {
     float m; float n; float o; float p;
 } mat4;
 
-void mat4ToArray (mat4 x, float data[16]);
 mat4 mat4Mult (mat4 x, mat4 y);
 float mat4Det (mat4 x);
 

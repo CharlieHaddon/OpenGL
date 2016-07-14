@@ -16,6 +16,8 @@ GLFWwindow* flowInit (int width, int height, char* name){
         return NULL;
     }
     glfwMakeContextCurrent (window); 
+    glfwSetKeyCallback (window, keyCallback);
+    glfwSetCursorPosCallback (window, mouseCallback);
 
     /* Initialise glew */
     glewExperimental = GL_TRUE;
@@ -43,6 +45,11 @@ int flowMain (GLFWwindow* window, int (*renderUpdate) (), int (*gameUpdate) ()){
         timeCurrFrame = glfwGetTime ();
         timeDelta = timeCurrFrame - timeLastFrame;
         timeLastFrame = timeCurrFrame;
+
+        mousexOffset = mousex - lastMousex;
+        mouseyOffset = lastMousey - mousey;
+        lastMousex = mousex;
+        lastMousey = mousey;
 
         glfwPollEvents ();
         (*gameUpdate) ();

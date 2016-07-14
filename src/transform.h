@@ -5,6 +5,10 @@
 
 #include "linear.h"
 
+void mat2GLArray (mat2 x, float data[4]);
+void mat3GLArray (mat3 x, float data[9]);
+void mat4GLArray (mat4 x, float data[16]);
+
 mat4 mat4Translate (vec3 v);
 mat4 mat4Scale (vec3 v);
 mat4 mat4Rotate (vec3 v, float t);
