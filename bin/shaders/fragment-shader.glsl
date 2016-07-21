@@ -1,10 +1,9 @@
 #version 330
-in vec2 TexCoord;
-
 out vec4 colour;
 
-uniform sampler2D uniTexture;
+uniform vec3 objectColour;
+uniform vec3 lightColour;
 
 void main (){
-    colour = texture (uniTexture, TexCoord);
+    colour = vec4 (objectColour * lightColour, 1.0f);
 }

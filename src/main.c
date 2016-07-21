@@ -15,8 +15,8 @@
 #include "transform.h"
 
 GLFWwindow* window;
-const int WIDTH = 1920;
-const int HEIGHT = 1080;
+const int WIDTH = 800;
+const int HEIGHT = 600;
 
 const double pi = 4 * atan (1);
 
@@ -27,6 +27,9 @@ vec3 cameraForward = {0.0f, 0.0f, -1.0f};
 
 double pitch = 0;
 double yaw = 0;
+
+vec3 lightColour = {1.0f, 1.0f, 1.0f};
+vec3 cubeColour = {1.0f, 0.5f, 0.31f};
 
 int gameUpdate (){
     if (keyState[GLFW_KEY_ESCAPE])
@@ -49,13 +52,9 @@ int gameUpdate (){
                     (vec3Cross (cameraForward, up))));
     
     float mouseSpeed = 0.15 * timeDelta;
-    double xOffset = mousexOffset;
-    double yOffset = mouseyOffset;
-    xOffset *= mouseSpeed;
-    yOffset *= mouseSpeed;
 
-    yaw += xOffset;
-    pitch += yOffset;
+    yaw += mousexOffset * mouseSpeed;
+    pitch += mouseyOffset * mouseSpeed;
 
     if (pitch > (pi / 2) - 0.01f)
         pitch = (pi / 2) - 0.01f;
@@ -78,184 +77,211 @@ int main (){
 
     /* Vertex data */
     GLfloat vertices[] = {
-         /* Positions */      /* Texture coordinates */
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+         /* Positions */
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
 
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
 
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
 
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f, -0.5f,
 
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-         0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+        -0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f
     };
 
-    GLuint elements[] = {
-    };
+    /* Cube shader */
+    const GLchar* cubeVertexShaderSource;
+    cubeVertexShaderSource = fileRead ("shaders/vertex-shader.glsl");
+    const GLchar* cubeFragmentShaderSource;
+    cubeFragmentShaderSource = fileRead ("shaders/fragment-shader.glsl");
 
-    vec3 cubePositions[] = {
-        (vec3){0.0f, 0.0f, 0.0f},
-        (vec3){2.0f, 2.0f, 0.0f},
-        (vec3){-1.5f, -2.2f, -2.5f},
-        (vec3){-3.8f, -2.0f, -12.3f},
-        (vec3){2.4f, -0.4f, -3.5f},
-        (vec3){-1.7f, 3.0f, -7.5f},
-        (vec3){1.3f, -2.0f, -2.5f},
-        (vec3){1.5f, 2.0f, -2.5f},
-        (vec3){-1.3f, 1.0f, -1.5f}
-    };
+    GLuint cubeVertexShader; 
+    cubeVertexShader = shaderCreate (cubeVertexShaderSource, GL_VERTEX_SHADER);
+    GLuint cubeFragmentShader;
+    cubeFragmentShader = shaderCreate (cubeFragmentShaderSource, GL_FRAGMENT_SHADER);
 
-    /* Create shaders */
-    const GLchar* vertexShaderSource;
-    vertexShaderSource = fileRead ("shaders/vertex-shader.glsl");
-    const GLchar* fragmentShaderSource;
-    fragmentShaderSource = fileRead ("shaders/fragment-shader.glsl");
-
-    GLuint vertexShader; 
-    vertexShader = shaderCreate (vertexShaderSource, GL_VERTEX_SHADER);
-    GLuint fragmentShader;
-    fragmentShader = shaderCreate (fragmentShaderSource, GL_FRAGMENT_SHADER);
-
-    GLuint shaders[] = {vertexShader, fragmentShader};
-    GLuint shaderProgram = shaderLink (shaders);
-
-    /* Generate data storage buffers */
-    GLuint VAO;
-    glGenVertexArrays (1, &VAO);
-    GLuint VBO;
-    glGenBuffers (1, &VBO);
-    GLuint EBO;
-    glGenBuffers (1, &EBO);
-
-    /* Store information on specific vertex array for redrawing */
-    glBindVertexArray (VAO);
-        /* Buffer vertices */
-        glBindBuffer (GL_ARRAY_BUFFER, VBO);
-        glBufferData (GL_ARRAY_BUFFER, 
-                      sizeof (vertices), 
-                      vertices, 
-                      GL_STATIC_DRAW);
-
-        /* Buffer elements */
-        glBindBuffer (GL_ELEMENT_ARRAY_BUFFER, EBO);
-        glBufferData (GL_ELEMENT_ARRAY_BUFFER, 
-                      sizeof (elements), 
-                      elements,
-                      GL_STATIC_DRAW);
-
-        /* Position */
-        glVertexAttribPointer (0, 
-                               3, 
-                               GL_FLOAT, 
-                               GL_FALSE, 
-                               5 * sizeof (GLfloat), 
-                               (GLvoid*)0);
-        glEnableVertexAttribArray (0);
-
-        /* Texture coordinates */
-        glVertexAttribPointer (1, 
-                               2, 
-                               GL_FLOAT, 
-                               GL_FALSE, 
-                               5 * sizeof (GLfloat),
-                               (GLvoid*)(3 * sizeof (GLfloat)));
-        glEnableVertexAttribArray (1);
-    /* Unbind vertex array */
-    glBindVertexArray (0);
-
-    /* Create texture */
-    GLuint texture;
-    texture = textureCreate ("uniTexture", "images/container.jpg", 0, 
-            shaderProgram);
-
+    GLuint shaders[] = {cubeVertexShader, cubeFragmentShader};
+    GLuint cubeShaderProgram = shaderLink (shaders);
     
-    /* Matrices */
-    mat4 model = (mat4){
+    /* Lamp shader */
+    const GLchar* lampVertexShaderSource;
+    lampVertexShaderSource = fileRead ("shaders/lamp-vertex-shader.glsl");
+    const GLchar* lampFragmentShaderSource;
+    lampFragmentShaderSource = fileRead ("shaders/lamp-fragment-shader.glsl");
+
+    GLuint lampVertexShader; 
+    lampVertexShader = shaderCreate (lampVertexShaderSource, GL_VERTEX_SHADER);
+    GLuint lampFragmentShader;
+    lampFragmentShader = shaderCreate (lampFragmentShaderSource, 
+            GL_FRAGMENT_SHADER);
+
+    GLuint lampShaders[] = {lampVertexShader, lampFragmentShader};
+    GLuint lampShaderProgram = shaderLink (lampShaders);
+    
+    /* Cube object */
+    GLint cubeModelLoc = glGetUniformLocation (cubeShaderProgram, "model");
+    GLint cubeViewLoc = glGetUniformLocation (cubeShaderProgram, "view");
+    GLint cubeProjLoc = glGetUniformLocation (cubeShaderProgram, "projection");
+
+    mat4 cubeModel = {
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         0, 0, 0, 1
     };
+    cubeModel = mat4Mult (mat4Rotate ((vec3){1, 0, 0}, 0), cubeModel);
+    cubeModel = mat4Mult (mat4Rotate ((vec3){0, 1, 0}, 0), cubeModel);
+    cubeModel = mat4Mult (mat4Rotate ((vec3){0, 0, 1}, 0), cubeModel);
+
+    cubeModel = mat4Mult (mat4Translate ((vec3){0, 0, 0}), cubeModel);
+    
+    GLuint cubeVAO;
+    GLuint cubeVBO;
+
+    GLfloat cubeModelArray[16];
+    GLfloat cubeViewArray[16];
+    GLfloat cubeProjArray[16];
+
+    mat4GLArray (cubeModel, cubeModelArray);
+
+    glGenVertexArrays (1, &cubeVAO);
+    glGenBuffers (1, &cubeVBO);
+
+    glBindBuffer (GL_ARRAY_BUFFER, cubeVBO);
+    glBufferData (GL_ARRAY_BUFFER,
+                  sizeof (vertices),
+                  vertices,
+                  GL_STATIC_DRAW);
+
+    glBindVertexArray (cubeVAO);
+    glBindBuffer (GL_ARRAY_BUFFER, cubeVBO);
+    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof (GLfloat),
+            (GLvoid*)0);
+    glEnableVertexAttribArray (0);
+    glBindVertexArray (0);
+
+    /* Lamp object */
+    GLint lampModelLoc = glGetUniformLocation (lampShaderProgram, "model");
+    GLint lampViewLoc = glGetUniformLocation (lampShaderProgram, "view");
+    GLint lampProjLoc = glGetUniformLocation (lampShaderProgram, "projection");
+
+    mat4 lampModel = {
+        1, 0, 0, 0,
+        0, 1, 0, 0,
+        0, 0, 1, 0,
+        0, 0, 0, 1
+    };
+    lampModel = mat4Mult (mat4Rotate ((vec3){1, 0, 0}, 0), lampModel);
+    lampModel = mat4Mult (mat4Rotate ((vec3){0, 1, 0}, 0), lampModel);
+    lampModel = mat4Mult (mat4Rotate ((vec3){0, 0, 1}, 0), lampModel);
+
+    lampModel = mat4Mult (mat4Scale ((vec3){0.5, 0.5, 0.5}), lampModel);
+
+    lampModel = mat4Mult (mat4Translate ((vec3){1, 1, -1}), lampModel);
+
+    
+    GLfloat lampModelArray[16];
+    GLfloat lampViewArray[16];
+    GLfloat lampProjArray[16];
+
+    mat4GLArray (lampModel, lampModelArray);
+
+    GLuint lampVAO;
+
+    glGenVertexArrays (1, &lampVAO);
+
+    glBindVertexArray (lampVAO);
+    glBindBuffer (GL_ARRAY_BUFFER, cubeVBO);
+    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof (GLfloat),
+            (GLvoid*)0);
+    glEnableVertexAttribArray (0);
+    glBindVertexArray (0);
+
+
+
+    /* Perspective projection */
     mat4 projection = mat4Perspective (pi / 2, (float)WIDTH / (float)HEIGHT, 
                                        0.01f, 100.0f);
     
-    GLint modelLoc = glGetUniformLocation (shaderProgram, "model");
-    GLint viewLoc = glGetUniformLocation (shaderProgram, "view");
-    GLint projLoc = glGetUniformLocation (shaderProgram, "projection");
-
-    GLfloat modelArray[16];
-    mat4GLArray (model, modelArray);
-    GLfloat viewArray[16]; 
-    GLfloat projArray[16];
-    mat4GLArray (projection, projArray);
-
     /* Render code executed in main loop */
     int renderUpdate (){
         glClearColor (0.2f, 0.3f, 0.3f, 1.0f);
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glActiveTexture (GL_TEXTURE0);
-        glBindTexture (GL_TEXTURE_2D, texture);
-        glUseProgram (shaderProgram);
-
         mat4 view = mat4LookAt (cameraPosition, 
                 vec3Add (cameraPosition, cameraForward), up);
-        mat4GLArray (view, viewArray);
+        
+        GLint cubeColourLoc = glGetUniformLocation (cubeShaderProgram, "objectColour");
+        GLint lampColourLoc = glGetUniformLocation (cubeShaderProgram, "lightColour");
+        GLint lightColourLoc = glGetUniformLocation (lampShaderProgram, "lightColour");
+      
+        /* Cube */
+        glUseProgram (cubeShaderProgram);
+        glUniform3f (lampColourLoc, lightColour.x, 
+                                    lightColour.y, 
+                                    lightColour.z);
+        glUniform3f (cubeColourLoc, cubeColour.x, 
+                                    cubeColour.y, 
+                                    cubeColour.z);
 
-        glUniformMatrix4fv (viewLoc, 1, GL_FALSE, viewArray);
-        glUniformMatrix4fv (projLoc, 1, GL_FALSE, projArray);
+        mat4GLArray (view, cubeViewArray);
+        mat4GLArray (projection, cubeProjArray);
 
-        glBindVertexArray (VAO);
-        for (int i = 0; i < 9; i++){
-            mat4 model = (mat4){
-                1, 0, 0, 0,
-                0, 1, 0, 0,
-                0, 0, 1, 0,
-                0, 0, 0, 1
-            };
-            vec3 axis = {1.0f, 0.3f, 0.5f};
-            float angle = 10 * i;
+        glUniformMatrix4fv (cubeViewLoc, 1, GL_FALSE, cubeViewArray);
+        glUniformMatrix4fv (cubeProjLoc, 1, GL_FALSE, cubeProjArray);
+        glUniformMatrix4fv (cubeModelLoc, 1, GL_FALSE, cubeModelArray);
 
-            model = mat4Mult (mat4Rotate (axis, angle), model);
-            model = mat4Mult (mat4Translate (cubePositions[i]), model);
+        glBindVertexArray (cubeVAO);
+        glDrawArrays (GL_TRIANGLES, 0, 36);
+        glBindVertexArray (0);
 
-            mat4GLArray (model, modelArray);
-            glUniformMatrix4fv (modelLoc, 1, GL_FALSE, modelArray);
+        /* Lamp */
+        glUseProgram (lampShaderProgram);
+        glUniform3f (lightColourLoc, lightColour.x, 
+                                     lightColour.y, 
+                                     lightColour.z);
 
-            glDrawArrays (GL_TRIANGLES, 0, 36);
-        }
+        mat4GLArray (view, lampViewArray);
+        mat4GLArray (projection, lampProjArray);
+
+        glUniformMatrix4fv (lampViewLoc, 1, GL_FALSE, lampViewArray);
+        glUniformMatrix4fv (lampProjLoc, 1, GL_FALSE, lampProjArray);
+        glUniformMatrix4fv (lampModelLoc, 1, GL_FALSE, lampModelArray);
+
+        glBindVertexArray (lampVAO);
+        glDrawArrays (GL_TRIANGLES, 0, 36);
         glBindVertexArray (0);
 
         return 0; 
@@ -268,5 +294,3 @@ int main (){
     flowExit ();
     return 0;
 }
-
-
