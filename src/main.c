@@ -78,47 +78,47 @@ int main (){
     /* Vertex data */
     GLfloat vertices[] = {
          /* Positions */
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
 
-        -0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
 
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
 
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
 
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
 
-        -0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
     };
 
     /* Cube shader */
@@ -128,9 +128,11 @@ int main (){
     cubeFragmentShaderSource = fileRead ("shaders/fragment-shader.glsl");
 
     GLuint cubeVertexShader; 
-    cubeVertexShader = shaderCreate (cubeVertexShaderSource, GL_VERTEX_SHADER);
+    cubeVertexShader = shaderCreate (cubeVertexShaderSource, 
+            GL_VERTEX_SHADER);
     GLuint cubeFragmentShader;
-    cubeFragmentShader = shaderCreate (cubeFragmentShaderSource, GL_FRAGMENT_SHADER);
+    cubeFragmentShader = shaderCreate (cubeFragmentShaderSource, 
+            GL_FRAGMENT_SHADER);
 
     GLuint shaders[] = {cubeVertexShader, cubeFragmentShader};
     GLuint cubeShaderProgram = shaderLink (shaders);
@@ -164,7 +166,6 @@ int main (){
     cubeModel = mat4Mult (mat4Rotate ((vec3){1, 0, 0}, 0), cubeModel);
     cubeModel = mat4Mult (mat4Rotate ((vec3){0, 1, 0}, 0), cubeModel);
     cubeModel = mat4Mult (mat4Rotate ((vec3){0, 0, 1}, 0), cubeModel);
-
     cubeModel = mat4Mult (mat4Translate ((vec3){0, 0, 0}), cubeModel);
     
     GLuint cubeVAO;
@@ -187,9 +188,13 @@ int main (){
 
     glBindVertexArray (cubeVAO);
     glBindBuffer (GL_ARRAY_BUFFER, cubeVBO);
-    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof (GLfloat),
+    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof (GLfloat),
             (GLvoid*)0);
     glEnableVertexAttribArray (0);
+    glVertexAttribPointer (1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof (GLfloat),
+            (GLvoid*)(3 * sizeof (GLfloat)));
+    glEnableVertexAttribArray (1);
+    glBindBuffer (GL_ARRAY_BUFFER, 0);
     glBindVertexArray (0);
 
     /* Lamp object */
@@ -197,21 +202,19 @@ int main (){
     GLint lampViewLoc = glGetUniformLocation (lampShaderProgram, "view");
     GLint lampProjLoc = glGetUniformLocation (lampShaderProgram, "projection");
 
+    vec3 lampPos = {2, 1.6, 1.4};
     mat4 lampModel = {
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         0, 0, 0, 1
     };
+    lampModel = mat4Mult (mat4Scale ((vec3){0.5, 0.5, 0.5}), lampModel);
     lampModel = mat4Mult (mat4Rotate ((vec3){1, 0, 0}, 0), lampModel);
     lampModel = mat4Mult (mat4Rotate ((vec3){0, 1, 0}, 0), lampModel);
     lampModel = mat4Mult (mat4Rotate ((vec3){0, 0, 1}, 0), lampModel);
+    lampModel = mat4Mult (mat4Translate (lampPos), lampModel);
 
-    lampModel = mat4Mult (mat4Scale ((vec3){0.5, 0.5, 0.5}), lampModel);
-
-    lampModel = mat4Mult (mat4Translate ((vec3){1, 1, -1}), lampModel);
-
-    
     GLfloat lampModelArray[16];
     GLfloat lampViewArray[16];
     GLfloat lampProjArray[16];
@@ -219,34 +222,40 @@ int main (){
     mat4GLArray (lampModel, lampModelArray);
 
     GLuint lampVAO;
-
     glGenVertexArrays (1, &lampVAO);
 
     glBindVertexArray (lampVAO);
     glBindBuffer (GL_ARRAY_BUFFER, cubeVBO);
-    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof (GLfloat),
+    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof (GLfloat),
             (GLvoid*)0);
     glEnableVertexAttribArray (0);
+    glBindBuffer (GL_ARRAY_BUFFER, 0);
     glBindVertexArray (0);
-
-
 
     /* Perspective projection */
     mat4 projection = mat4Perspective (pi / 2, (float)WIDTH / (float)HEIGHT, 
                                        0.01f, 100.0f);
+
+    /* Uniforms */
+    GLint cubeColourLoc = glGetUniformLocation (cubeShaderProgram, 
+            "objectColour");
+    GLint lampColourLoc = glGetUniformLocation (cubeShaderProgram, 
+            "lightColour");
+    GLint lampPosLoc = glGetUniformLocation (cubeShaderProgram, 
+            "lampPos");
+    GLint viewPosLoc = glGetUniformLocation (cubeShaderProgram, 
+            "viewPos");
+    GLint lightColourLoc = glGetUniformLocation (lampShaderProgram, 
+            "lightColour");
     
     /* Render code executed in main loop */
     int renderUpdate (){
-        glClearColor (0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor (0.1f, 0.1f, 0.1f, 1.0f);
         glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         mat4 view = mat4LookAt (cameraPosition, 
                 vec3Add (cameraPosition, cameraForward), up);
-        
-        GLint cubeColourLoc = glGetUniformLocation (cubeShaderProgram, "objectColour");
-        GLint lampColourLoc = glGetUniformLocation (cubeShaderProgram, "lightColour");
-        GLint lightColourLoc = glGetUniformLocation (lampShaderProgram, "lightColour");
-      
+              
         /* Cube */
         glUseProgram (cubeShaderProgram);
         glUniform3f (lampColourLoc, lightColour.x, 
@@ -255,6 +264,12 @@ int main (){
         glUniform3f (cubeColourLoc, cubeColour.x, 
                                     cubeColour.y, 
                                     cubeColour.z);
+        glUniform3f (lampPosLoc, lampPos.x,
+                                 lampPos.y,
+                                 lampPos.z);
+        glUniform3f (viewPosLoc, cameraPosition.x,
+                                 cameraPosition.y,
+                                 cameraPosition.z);
 
         mat4GLArray (view, cubeViewArray);
         mat4GLArray (projection, cubeProjArray);
