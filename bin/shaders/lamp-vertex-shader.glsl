@@ -1,10 +1,13 @@
 #version 330
 layout (location = 0) in vec3 position;
 
-uniform mat4 model;
-uniform mat4 view;
-uniform mat4 projection;
+uniform mat4 modelMatrix;
+uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
 
 void main (){
-    gl_Position = projection * view * model * vec4 (position, 1.0);
+    gl_Position = projectionMatrix 
+                * viewMatrix 
+                * modelMatrix 
+                * vec4 (position, 1.0);
 }

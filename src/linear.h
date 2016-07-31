@@ -31,6 +31,8 @@ typedef struct {
 } mat2;
 
 mat2 mat2Mult (mat2 x, mat2 y);
+mat2 mat2Transpose (mat2 x);
+mat2 mat2Inv (mat2 x);
 float mat2Det (mat2 x);
 
 typedef struct {
@@ -40,6 +42,8 @@ typedef struct {
 } mat3;
 
 mat3 mat3Mult (mat3 x, mat3 y);
+mat3 mat3Transpose (mat3 x);
+mat3 mat3Inv (mat3 x);
 float mat3Det (mat3 x);
 
 typedef struct {
@@ -50,6 +54,8 @@ typedef struct {
 } mat4;
 
 mat4 mat4Mult (mat4 x, mat4 y);
+mat4 mat4Transpose (mat4 x);
+mat4 mat4Inv (mat4 x);
 float mat4Det (mat4 x);
 
 #endif

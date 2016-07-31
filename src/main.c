@@ -24,11 +24,11 @@ const double pi = 4 * atan (1);
 vec3 up = {0.0f, 1.0f, 0.0f};
 vec3 cameraPosition = {0.0f, 0.0f, 3.0f};
 vec3 cameraForward = {0.0f, 0.0f, -1.0f};
+vec3 lampPos = {2, 1.6, 1.4};
 
 double pitch = 0;
 double yaw = 0;
 
-vec3 lightColour = {1.0f, 1.0f, 1.0f};
 vec3 cubeColour = {1.0f, 0.5f, 0.31f};
 
 int gameUpdate (){
@@ -77,48 +77,47 @@ int main (){
 
     /* Vertex data */
     GLfloat vertices[] = {
-         /* Positions */
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f, 
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
+         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,  0.0f, 0.0f,
 
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f, 1.0f,   0.0f, 0.0f,
 
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f, -1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
+         0.5f,  0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  0.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f,
 
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
+         0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 1.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+         0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, -1.0f,  0.0f,  0.0f, 1.0f,
 
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f,
+         0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 1.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+         0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f,  1.0f,  0.0f,  0.0f, 1.0f
     };
 
     /* Cube shader */
@@ -151,11 +150,18 @@ int main (){
 
     GLuint lampShaders[] = {lampVertexShader, lampFragmentShader};
     GLuint lampShaderProgram = shaderLink (lampShaders);
-    
+
     /* Cube object */
-    GLint cubeModelLoc = glGetUniformLocation (cubeShaderProgram, "model");
-    GLint cubeViewLoc = glGetUniformLocation (cubeShaderProgram, "view");
-    GLint cubeProjLoc = glGetUniformLocation (cubeShaderProgram, "projection");
+    glUseProgram (cubeShaderProgram);
+
+    GLint cubeModelLoc = glGetUniformLocation (cubeShaderProgram, 
+            "modelMatrix");
+    GLint cubeViewLoc = glGetUniformLocation (cubeShaderProgram, 
+            "viewMatrix");
+    GLint cubeProjLoc = glGetUniformLocation (cubeShaderProgram, 
+            "projectionMatrix");
+    GLint cubeNormLoc = glGetUniformLocation (cubeShaderProgram,
+            "normalMatrix");
 
     mat4 cubeModel = {
         1, 0, 0, 0,
@@ -167,15 +173,43 @@ int main (){
     cubeModel = mat4Mult (mat4Rotate ((vec3){0, 1, 0}, 0), cubeModel);
     cubeModel = mat4Mult (mat4Rotate ((vec3){0, 0, 1}, 0), cubeModel);
     cubeModel = mat4Mult (mat4Translate ((vec3){0, 0, 0}), cubeModel);
+
+    mat4 cn = mat4Transpose (mat4Inv (cubeModel));
+    mat3 cubeNorm = (mat3){
+        cn.a, cn.b, cn.c,
+        cn.e, cn.f, cn.g,
+        cn.i, cn.j, cn.k
+    };
     
+    GLint cubeShininessLoc = glGetUniformLocation (cubeShaderProgram, 
+            "material.shininess");
+
+    GLint lampAmbientLoc = glGetUniformLocation (cubeShaderProgram,
+            "lamp.ambient");
+    GLint lampDiffuseLoc = glGetUniformLocation (cubeShaderProgram,
+            "lamp.diffuse");
+    GLint lampSpecularLoc = glGetUniformLocation (cubeShaderProgram,
+            "lamp.specular");
+    GLint lampPositionLoc = glGetUniformLocation (cubeShaderProgram,
+            "lamp.position");
+
+    glUniform1f (cubeShininessLoc, 64.0f);
+
+    glUniform3f (lampAmbientLoc, 0.2f, 0.2f, 0.2f);
+    glUniform3f (lampDiffuseLoc, 1.0f, 1.0f, 1.0f);
+    glUniform3f (lampSpecularLoc, 1.0f, 1.0f, 1.0f);
+    glUniform3f (lampPositionLoc, lampPos.x, lampPos.y, lampPos.z);
+
     GLuint cubeVAO;
     GLuint cubeVBO;
 
     GLfloat cubeModelArray[16];
     GLfloat cubeViewArray[16];
     GLfloat cubeProjArray[16];
+    GLfloat cubeNormArray[9];
 
     mat4GLArray (cubeModel, cubeModelArray);
+    mat3GLArray (cubeNorm, cubeNormArray);
 
     glGenVertexArrays (1, &cubeVAO);
     glGenBuffers (1, &cubeVBO);
@@ -188,21 +222,28 @@ int main (){
 
     glBindVertexArray (cubeVAO);
     glBindBuffer (GL_ARRAY_BUFFER, cubeVBO);
-    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof (GLfloat),
+    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof (GLfloat),
             (GLvoid*)0);
     glEnableVertexAttribArray (0);
-    glVertexAttribPointer (1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof (GLfloat),
+    glVertexAttribPointer (1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof (GLfloat),
             (GLvoid*)(3 * sizeof (GLfloat)));
     glEnableVertexAttribArray (1);
+    glVertexAttribPointer (2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof (GLfloat),
+            (GLvoid*)(6 * sizeof (GLfloat)));
+    glEnableVertexAttribArray (2);
     glBindBuffer (GL_ARRAY_BUFFER, 0);
     glBindVertexArray (0);
 
     /* Lamp object */
-    GLint lampModelLoc = glGetUniformLocation (lampShaderProgram, "model");
-    GLint lampViewLoc = glGetUniformLocation (lampShaderProgram, "view");
-    GLint lampProjLoc = glGetUniformLocation (lampShaderProgram, "projection");
+    glUseProgram (lampShaderProgram);
 
-    vec3 lampPos = {2, 1.6, 1.4};
+    GLint lampModelLoc = glGetUniformLocation (lampShaderProgram, 
+            "modelMatrix");
+    GLint lampViewLoc = glGetUniformLocation (lampShaderProgram, 
+            "viewMatrix");
+    GLint lampProjLoc = glGetUniformLocation (lampShaderProgram, 
+            "projectionMatrix");
+
     mat4 lampModel = {
         1, 0, 0, 0,
         0, 1, 0, 0,
@@ -226,7 +267,7 @@ int main (){
 
     glBindVertexArray (lampVAO);
     glBindBuffer (GL_ARRAY_BUFFER, cubeVBO);
-    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof (GLfloat),
+    glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof (GLfloat),
             (GLvoid*)0);
     glEnableVertexAttribArray (0);
     glBindBuffer (GL_ARRAY_BUFFER, 0);
@@ -237,17 +278,25 @@ int main (){
                                        0.01f, 100.0f);
 
     /* Uniforms */
-    GLint cubeColourLoc = glGetUniformLocation (cubeShaderProgram, 
-            "objectColour");
-    GLint lampColourLoc = glGetUniformLocation (cubeShaderProgram, 
-            "lightColour");
     GLint lampPosLoc = glGetUniformLocation (cubeShaderProgram, 
-            "lampPos");
+            "lamp.position");
     GLint viewPosLoc = glGetUniformLocation (cubeShaderProgram, 
             "viewPos");
     GLint lightColourLoc = glGetUniformLocation (lampShaderProgram, 
             "lightColour");
-    
+
+    /* Textures */
+    glUseProgram (cubeShaderProgram);
+    GLint cubeDiffuseLoc = glGetUniformLocation (cubeShaderProgram, 
+            "material.diffuse");
+    glUniform1i (cubeDiffuseLoc, 0);
+    GLint cubeSpecularLoc = glGetUniformLocation (cubeShaderProgram,
+            "material.specular");
+    glUniform1i (cubeSpecularLoc, 1);
+
+    GLuint diffuseMap = textureCreate ("images/container2.png");
+    GLuint specularMap = textureCreate ("images/container2_specular.png");
+
     /* Render code executed in main loop */
     int renderUpdate (){
         glClearColor (0.1f, 0.1f, 0.1f, 1.0f);
@@ -258,12 +307,12 @@ int main (){
               
         /* Cube */
         glUseProgram (cubeShaderProgram);
-        glUniform3f (lampColourLoc, lightColour.x, 
-                                    lightColour.y, 
-                                    lightColour.z);
-        glUniform3f (cubeColourLoc, cubeColour.x, 
-                                    cubeColour.y, 
-                                    cubeColour.z);
+
+        glActiveTexture (GL_TEXTURE0);
+        glBindTexture (GL_TEXTURE_2D, diffuseMap);
+        glActiveTexture (GL_TEXTURE1);
+        glBindTexture (GL_TEXTURE_2D, specularMap);
+
         glUniform3f (lampPosLoc, lampPos.x,
                                  lampPos.y,
                                  lampPos.z);
@@ -277,6 +326,7 @@ int main (){
         glUniformMatrix4fv (cubeViewLoc, 1, GL_FALSE, cubeViewArray);
         glUniformMatrix4fv (cubeProjLoc, 1, GL_FALSE, cubeProjArray);
         glUniformMatrix4fv (cubeModelLoc, 1, GL_FALSE, cubeModelArray);
+        glUniformMatrix4fv (cubeNormLoc, 1, GL_FALSE, cubeNormArray);
 
         glBindVertexArray (cubeVAO);
         glDrawArrays (GL_TRIANGLES, 0, 36);
@@ -284,9 +334,7 @@ int main (){
 
         /* Lamp */
         glUseProgram (lampShaderProgram);
-        glUniform3f (lightColourLoc, lightColour.x, 
-                                     lightColour.y, 
-                                     lightColour.z);
+        glUniform3f (lightColourLoc, 1.0f, 1.0f, 1.0f);
 
         mat4GLArray (view, lampViewArray);
         mat4GLArray (projection, lampProjArray);

@@ -40,4 +40,3 @@ GLuint shaderLink (GLuint* shaders){
 
     return shaderProgram;
 }
-

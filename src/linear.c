@@ -111,6 +111,23 @@ mat2 mat2Mult (mat2 x, mat2 y){
     return result;
 }
 
+mat2 mat2Transpose (mat2 x){
+    mat2 result = {
+        x.a, x.c,
+        x.b, x.d
+    };
+    return result;
+}
+
+mat2 mat2Inv (mat2 x){
+    float det = mat2Det (x);
+    mat2 result = {
+        x.d / det, -x.a / det,
+       -x.c / det,  x.a / det
+    };
+    return result;
+}
+
 float mat2Det (mat2 x){
     float result;
     result = x.a * x.d - x.b * x.c;
@@ -139,20 +156,47 @@ mat3 mat3Mult (mat3 x, mat3 y){
     return result;
 }
 
+mat3 mat3Transpose (mat3 x){
+    mat3 result = {
+        x.a, x.d, x.g,
+        x.b, x.e, x.h,
+        x.c, x.f, x.i
+    };
+    return result;
+}
+
+mat3 mat3Inv (mat3 x){
+    float det = mat3Det (x);
+    float a = mat2Det ((mat2){x.e, x.f, x.h, x.i}) / det;
+    float b = mat2Det ((mat2){x.f, x.d, x.i, x.g}) / det;
+    float c = mat2Det ((mat2){x.d, x.e, x.g, x.h}) / det;
+    float d = mat2Det ((mat2){x.h, x.i, x.b, x.c}) / det;
+    float e = mat2Det ((mat2){x.i, x.g, x.c, x.a}) / det;
+    float f = mat2Det ((mat2){x.g, x.h, x.a, x.b}) / det;
+    float g = mat2Det ((mat2){x.b, x.c, x.e, x.f}) / det;
+    float h = mat2Det ((mat2){x.c, x.a, x.f, x.d}) / det;
+    float i = mat2Det ((mat2){x.a, x.b, x.d, x.e}) / det;
+
+    mat3 result = {
+        a, d, g,
+        b, e, h,
+        c, f, i
+    };
+    return result;
+}
+
 float mat3Det (mat3 x){
     float result;
-    mat2 ca = {x.e, x.f, x.h, x.i};
-    mat2 cb = {x.f, x.d, x.i, x.g};
-    mat2 cc = {x.d, x.e, x.g, x.h};
-    result = x.a * mat2Det (ca)
-           + x.b * mat2Det (cb)
-           + x.c * mat2Det (cc);
+    mat2 ia = {x.e, x.f, x.h, x.i};
+    mat2 ib = {x.f, x.d, x.i, x.g};
+    mat2 ic = {x.d, x.e, x.g, x.h};
+    result = x.a * mat2Det (ia)
+           + x.b * mat2Det (ib)
+           + x.c * mat2Det (ic);
     return result;
 }
 
 /* 4x4 matrix */
-
-
 mat4 mat4Mult (mat4 x, mat4 y){
     float a = x.a * y.a + x.b * y.e + x.c * y.i + x.d * y.m;
     float b = x.a * y.b + x.b * y.f + x.c * y.j + x.d * y.n;
@@ -180,5 +224,104 @@ mat4 mat4Mult (mat4 x, mat4 y){
         i, j, k, l,
         m, n, o, p
     };
+    return result;
+}
+
+mat4 mat4Transpose (mat4 x){
+    mat4 result = {
+        x.a, x.e, x.i, x.m,
+        x.b, x.f, x.j, x.n,
+        x.c, x.g, x.k, x.o,
+        x.d, x.h, x.l, x.p
+    };
+    return result;
+}
+
+/* I don't think this function works properly but haven't checked. */
+mat4 mat4Inv (mat4 x){
+    double ca = x.k * x.p - x.o * x.l;
+    double cb = x.j * x.p - x.n * x.l;
+    double cc = x.j * x.o - x.n * x.k;
+    double cd = x.i * x.p - x.m * x.l;
+    double ce = x.i * x.o - x.m * x.k;
+    double cf = x.i * x.n - x.m * x.j;
+    double cg = x.g * x.p - x.o * x.h;
+    double ch = x.f * x.p - x.n * x.h;
+    double ci = x.f * x.o - x.n * x.g;
+    double cj = x.e * x.p - x.m * x.h;
+    double ck = x.e * x.o - x.m * x.g;
+    double cl = x.f * x.p - x.n * x.h;
+    double cm = x.e * x.n - x.m * x.f;
+    double cn = x.g * x.l - x.k * x.h;
+    double co = x.f * x.l - x.j * x.h;
+    double cp = x.f * x.k - x.j * x.g;
+    double cq = x.e * x.l - x.i * x.h;
+    double cr = x.e * x.k - x.i * x.g;
+    double cs = x.e * x.j - x.i * x.f;
+
+    mat4 r;
+
+    r.a = + (x.f * ca - x.g * cb + x.h * cc);
+    r.b = - (x.e * ca - x.g * cd + x.h * ce);
+    r.c = + (x.e * cb - x.f * cd + x.h * cf);
+    r.d = - (x.e * cc - x.f * ce + x.g * cf);
+
+    r.e = - (x.b * ca - x.c * cb + x.d * cc);
+    r.f = + (x.a * ca - x.c * cd + x.d * ce);
+    r.g = - (x.a * cb - x.b * cd + x.d * cf);
+    r.h = + (x.a * cc - x.b * ce + x.c * cf);
+
+    r.i = + (x.b * cg - x.c * ch + x.d * ci);
+    r.j = - (x.a * cg - x.c * cj + x.d * ck);
+    r.k = + (x.a * cl - x.b * cj + x.d * cm);
+    r.l = - (x.a * ci - x.b * ck + x.c * cm);
+
+    r.m = - (x.b * cn - x.c * co + x.d * cp);
+    r.n = + (x.a * cn - x.c * cq + x.d * cr);
+    r.o = - (x.a * co - x.b * cq + x.d * cs);
+    r.p = + (x.a * cp - x.b * cr + x.c * cs);
+
+    double d =
+        + x.a * r.a
+        + x.b * r.b
+        + x.c * r.c
+        + x.d * r.d;
+
+    mat4 result = (mat4){
+        r.a / d, r.b / d, r.c / d, r.d / d,
+        r.e / d, r.f / d, r.g / d, r.h / d,
+        r.i / d, r.j / d, r.k / d, r.l / d,
+        r.m / d, r.n / d, r.o / d, r.p / d
+    };
+    return result;
+}
+
+/* This function doesn't do what it's supposed to. */
+float mat4Det (mat4 x){
+    mat3 ia = {
+        x.f, x.g, x.h,
+        x.j, x.k, x.l,
+        x.n, x.o, x.p
+    };
+    mat3 ib = {
+        x.g, x.h, x.e,
+        x.k, x.l, x.i,
+        x.o, x.p, x.l
+    };
+    mat3 ic = {
+        x.h, x.e, x.f,
+        x.l, x.i, x.j,
+        x.p, x.m, x.n
+    };
+    mat3 id = {
+        x.e, x.f, x.g,
+        x.i, x.j, x.k,
+        x.m, x.n, x.o
+    };
+
+    float result = x.a * mat3Det (ia)
+                 + x.b * mat3Det (ib)
+                 + x.c * mat3Det (ic)
+                 + x.d * mat3Det (id);
     return result;
 }
